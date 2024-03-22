@@ -1,4 +1,4 @@
-import style from './page.module.scss'
+import style from './layout.module.scss'
 import Link from 'next/link'
 
 import Header from './components/Header'

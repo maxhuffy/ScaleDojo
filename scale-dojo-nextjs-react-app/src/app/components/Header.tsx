@@ -5,9 +5,9 @@ import Link from 'next/link'
 const Header: React.FC = () => {
     return <header className={style.header}>
         <ul>
-            <Link href="/dashboard/main">Main</Link>
+            <Link href="/home">Home</Link>
             <div>|</div>
-            <Link href="/dashboard/settings">Settings</Link>
+            <Link href="/settings">Settings</Link>
             <div>|</div>
         </ul>
     </header>;
