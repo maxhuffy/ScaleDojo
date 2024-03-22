@@ -9,12 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@midival/core": "^0.0.17",
+    "@midival/node": "^0.1.0",
+    "midi": "^2.0.0",
     "next": "14.1.3",
     "react": "^18",
     "react-dom": "^18",
     "sass": "^1.72.0"
   },
   "devDependencies": {
+    "@types/midi": "^2.0.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
