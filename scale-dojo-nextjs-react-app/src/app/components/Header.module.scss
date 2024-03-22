@@ -1,0 +1,22 @@
+.header {
+    font-family: 'Courier New', Courier, monospace;
+    color: black;
+    font-size: large;
+    font-weight: 700;
+
+    ul {
+        list-style: none;
+        list-style-position: none;
+        padding: 0;
+
+        * {
+            display: inline-block;
+            margin-right: 10px;
+        }
+    }
+}
+
+.vl {
+    border-left: 3px solid black;
+    height: 100px;
+}
