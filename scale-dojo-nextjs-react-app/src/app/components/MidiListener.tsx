@@ -1,14 +1,15 @@
-'use client'
-
 import React, { useState, useEffect } from 'react';
 import {MIDIVal, MIDIValInput} from "@midival/core"
 
-// Received an error the first time I compiled the MIDI object
-const MidiListener: React.FC = () => {
-    const [MIDIDevices, setMIDIDevices] = useState<Record<string, number>>({});
-    const [selectedDeviceString, setSelectedDevice] = useState<string | null>(null);
+interface MidiListenerProps {
+    selectedDeviceIdx: number | null;
+    setSelectedDeviceIdx: (selectedDeviceIdx: number | null) => void;
+}
 
-    // Get connected MIDI devices
+const MidiListener: React.FC<MidiListenerProps> = ( {selectedDeviceIdx, setSelectedDeviceIdx }) => {
+    const [MIDIDevices, setMIDIDevices] = useState<Record<string, number>>({});
+
+    // Store connected MIDI devices in Object
     useEffect(() => {
         if (MIDIVal) {
             MIDIVal.connect().then((accessObject: any) => {
@@ -41,10 +42,10 @@ const MidiListener: React.FC = () => {
     }, [MIDIDevices]);
 
     return <div>
-        <p>MIDI Device: {(selectedDeviceString !== null) ? selectedDeviceString : "No Device Selected"}</p>
-        <p>MIDI id: {(selectedDeviceString !== null) ? MIDIDevices[selectedDeviceString] : "No Device Selected"}</p>
+        <p>MIDI Device: {(selectedDeviceIdx !== null) ? Object.keys(MIDIDevices).at(selectedDeviceIdx) : "No Device Selected"}</p>
+        <p>MIDI id: {(selectedDeviceIdx !== null) ? selectedDeviceIdx : "No Device Selected"}</p>
         
-        <select onChange={event => setSelectedDevice(event.target.value)}>
+        <select onChange={event => setSelectedDeviceIdx(MIDIDevices[event.target.value])}>
             {Object.keys(MIDIDevices).map((device, index) => (
                 <option key={index} value={device}>
                     {device}
