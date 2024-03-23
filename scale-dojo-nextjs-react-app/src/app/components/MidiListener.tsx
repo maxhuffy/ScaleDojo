@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import {MIDIVal, MIDIValInput} from "@midival/core"
-import { access } from 'fs';
-
 
 // Received an error the first time I compiled the MIDI object
 const MidiListener: React.FC = () => {
-    const [MIDIDevices, setMIDIDevices] = useState<string[]>([]);
+    const [MIDIDevices, setMIDIDevices] = useState<Record<string, number>>({});
+    const [selectedDeviceString, setSelectedDevice] = useState<string | null>(null);
 
     // Get connected MIDI devices
     useEffect(() => {
@@ -18,9 +17,17 @@ const MidiListener: React.FC = () => {
                     return;
                 }
                 
-                setMIDIDevices([]);
+                setMIDIDevices({});
+                let value: number = 0;
                 accessObject.inputs.forEach( function (element: any) {
-                    setMIDIDevices(prevDevices => [...prevDevices, element.name]);
+                    let updatedValue: object = {};
+                    let key: string = element.name;
+                    updatedValue = {[key]:value};
+                    setMIDIDevices(MIDIDevices => ({
+                        ...MIDIDevices,
+                        ...updatedValue
+                    }));
+                    value++;
                 });
 
             });
@@ -29,13 +36,23 @@ const MidiListener: React.FC = () => {
 
     // Log the MIDI device options when the items change
     useEffect(() => {
-        if (MIDIDevices.length != 0)
+        if (!(Object.keys(MIDIDevices).length === 0))
             console.log(MIDIDevices);
     }, [MIDIDevices]);
 
-    
-
-    return <div><p>Learning!</p></div>
+    return <div>
+        <p>MIDI Device: {(selectedDeviceString !== null) ? selectedDeviceString : "No Device Selected"}</p>
+        <p>MIDI id: {(selectedDeviceString !== null) ? MIDIDevices[selectedDeviceString] : "No Device Selected"}</p>
+        
+        <select onChange={event => setSelectedDevice(event.target.value)}>
+            {Object.keys(MIDIDevices).map((device, index) => (
+                <option key={index} value={device}>
+                    {device}
+                </option>
+            ))}
+        </select>
+        
+    </div>
 }
 
 export default MidiListener;
