@@ -1,4 +1,4 @@
-import React, { useEffect, useRef} from "react";
+import React, { useEffect, useRef, useState} from "react";
 import { MIDIVal, MIDIValInput } from "@midival/core";
 import { access } from "fs";
 
@@ -8,16 +8,15 @@ interface MidiStringStreamProps {
 
 const MidiStringStream: React.FC<MidiStringStreamProps> = ({selectedDeviceIdx}) => {
     const inputRef = useRef<MIDIValInput | null>(null);
+    const [textboxText, setTextboxText] = useState('No MIDI data yet...');
 
     useEffect(() => {
         if (selectedDeviceIdx !== null) {
             MIDIVal.connect().then(access => {
                 inputRef.current = new MIDIValInput(access.inputs[selectedDeviceIdx]);
                 inputRef.current.onAllNoteOn(message => {
-                    console.log("Note On", message);
-                    
-                    const timestamp: any = performance.now();
-                    console.log(timestamp);
+                    const timestamp: string = performance.now().toFixed(1).toString();
+                    setTextboxText(prevTextboxText => `Timestamp: ${timestamp}, Note:${message.note}` + '\n' + prevTextboxText);
                 });
             });
         }
@@ -31,7 +30,7 @@ const MidiStringStream: React.FC<MidiStringStreamProps> = ({selectedDeviceIdx}) 
 
     
     return <div>
-        <p>The midi device ID is: {selectedDeviceIdx}</p>
+        <textarea readOnly value={textboxText}></textarea>
     </div>
 }
 
