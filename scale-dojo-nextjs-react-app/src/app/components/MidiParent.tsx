@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import MidiListener from "./MidiListener";
+import MidiStringStream from "./MidiStringStream";
 
 const MidiParent: React.FC = () => {
     const [selectedDeviceIdx, setSelectedDevice] = useState<number | null>(0);
@@ -12,6 +13,7 @@ const MidiParent: React.FC = () => {
 
     return <div>
         <MidiListener selectedDeviceIdx={selectedDeviceIdx} setSelectedDeviceIdx={setSelectedDevice}></MidiListener>
+        <MidiStringStream selectedDeviceIdx={selectedDeviceIdx}></MidiStringStream>
     </div>
 }
 
